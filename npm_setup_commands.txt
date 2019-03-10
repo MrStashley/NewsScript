@@ -1,0 +1,7 @@
+npm init
+npm install express --save
+npm install hjs --save  //installs hogan.js templating engine
+npm install hogan-middleware --save
+npm install socket.io --save
+npm install mysql --save
+npm install body-parser --save
