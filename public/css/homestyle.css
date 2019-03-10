@@ -1,0 +1,46 @@
+*{
+	font-family: 'PT Sans', sans-serif;
+}
+
+.dateinput{
+	padding:5px;
+	border-style: solid;
+	border-width: 1px;
+	border-radius: 5px;
+}
+
+#adddate{
+	padding:;
+}
+
+#sidebar{
+	position: fixed;
+    width: 35%;
+    overflow-y: scroll;
+    top: 0;
+    left:65%;
+    bottom: 0;
+    border-left-style: solid;
+    border-left-width: 1px;
+}
+
+#main{
+	width: 65%;
+}
+
+#newstext{
+	border-style: solid;
+	border-width: 1px;
+	border-radius: 5px;
+	width: 60%;
+	height: 15%;
+	padding: 10px;
+}
+
+#newsinput{
+	border-style: solid;
+	border-width: 1px;
+	border-radius: 5px;
+	padding: 20px;
+	width:90%;
+}

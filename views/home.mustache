@@ -1,0 +1,93 @@
+<html>
+<head>
+	<link href="https://fonts.googleapis.com/css?family=PT+Sans" rel="stylesheet">
+	<link rel="stylesheet" type ="text/css" href ="/css/homestyle.css">
+</head>
+
+<body>
+	<div id = "main">
+
+	<h4>Use the form below to submit an announcement to the CHS News</h4>
+	<form id = "newsinput" action="/submission" method="POST">
+		New Announcement:
+		<br><br>
+		<span>
+		Starting Date: <input class = "dateinput" type = "date" name = "startdate">
+		&nbsp;Ending Date: <input class ="dateinput" type = "date" name = "startdate">
+		<button type = "button" onclick = "newDate();" id = "adddate">Add date</button>
+		</span>
+		<br><br>
+		<div id = "newdates"></div>
+		<button type = "button" onclick = "removeDate();" id = "removedate" style = "display:none;">Remove Date</button>
+		<br><br>
+		Announcement Text:<br>
+		<textarea name = "text" form = "newsinput" placeholder="Announcement text goes here..." id = "newstext"></textarea>
+		<br><br>
+		<button type = "submit">Submit</button>
+	</form>
+
+	<a href = "/script">News Script</a>
+	</div>
+	<div id = "sidebar">
+
+	</div>
+<script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+<script src = "/js/datefunctions.js"></script>
+<script>
+	var newinput = [];
+	var inputcount = 0;
+	var br = [];
+	var br2 = [];
+	var text = [];
+	const newdates = document.getElementById("newdates");
+	const removedate = document.getElementById("removedate");
+	function newDate(){
+		text[inputcount] = document.createTextNode("Additional Date: ");
+		newdates.appendChild(text[inputcount]);
+
+		newinput[inputcount] = document.createElement("input");
+		newinput[inputcount].type = "date";
+		newinput[inputcount].name = "date";
+		newinput[inputcount].className = "dateinput";
+		newinput[inputcount].id = "date"+inputcount;
+		newdates.appendChild(newinput[inputcount]);
+
+		br[inputcount] = document.createElement("br");
+		newdates.appendChild(br[inputcount]);
+		br2[inputcount] = document.createElement("br");
+		newdates.appendChild(br2[inputcount]);
+		inputcount++;
+
+		removedate.style = "display: initial;";
+	}
+
+	function removeDate(){
+		br2[inputcount-1].parentNode.removeChild(br2[inputcount-1]);
+		br[inputcount-1].parentNode.removeChild(br[inputcount-1]);
+		newinput[inputcount-1].parentNode.removeChild(newinput[inputcount-1]);
+		text[inputcount-1].parentNode.removeChild(text[inputcount-1]);
+		inputcount--;
+		if(inputcount == 0){
+			removedate.style = "display: none;"
+		}
+	}
+</script>
+<script>
+	var announcements = [];
+
+	announcements[announcements.length] = new announcement(2019,1,10,2019,2,5,"Yeet");
+	console.log(announcements);
+
+	const date = new Date();
+	const time = document.getElementById("time");
+	var year = date.getFullYear();
+	var month = date.getMonth()+1;
+	var day = date.getDate();
+	var hours = date.getHours();
+	var minutes = date.getMinutes();
+
+</script>
+
+</body>
+
+</html>

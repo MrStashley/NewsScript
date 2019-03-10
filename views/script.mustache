@@ -1,0 +1,39 @@
+<html>
+<head>
+
+</head>
+
+<body>
+	Good morning Centennial!<br>
+	We are live from the television studio<br>
+	Today is <span id = "dateElem"></span><br>
+	Please stand for the Pledge to the Flag<br>
+
+	<br>
+	I pledge allegiance to the flag<br>
+	of the United States of America<br>
+	And to the republic for which it stands<br>
+	One nation under God, indivisible with liberty and justice for all<br>
+
+	<br>This completes the morning announcements.<br>
+	I'm ____ and I'm _____<br>
+	And we have Eagle Pride!
+
+<br><br>
+<a href = "/">Go Back</a>
+
+<script src = "/js/datefunctions.js"></script>
+<script>
+	var date = JSON.parse('{"year": {{year}},"month": {{month}},"day": {{day}}, "dayWeek": {{dayWeek}}}');
+	const dateElem = document.getElementById("dateElem");
+
+	var dayofweek = calcDayofWeek(date.dayWeek);
+	var month = calcMonth(date.month);
+	var day = date.day + suffix(date.day);
+	var dateText = dayofweek + ", " + month + " " + day;
+	dateElem.innerHTML = dateText;
+
+</script>
+</body>
+
+</html>
