@@ -1,0 +1,3 @@
+mysql://bfa4f0b845d82b:971911e2@us-cdbr-iron-east-03.cleardb.net/heroku_01d0e57e990d5bb?reconnect=true
+
+'2019-03-11', '2019-03-18', '[\"2019-03-22\"]', 'Hey Centennial! Come to know your planet night on march 22nd at 7! We\'re gonna make earth great again and stuff. It will be huge! We should build a wall around all of the pollutants of the earth and stuff. Also come to pie five for the earth fundraiser. '

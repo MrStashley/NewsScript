@@ -50,10 +50,10 @@ function announcement(styear, stmonth, stday, endyear, endmonth, endday, text, v
 const con = mysql.createPool({
 	connectionLimit: 100,
 	host: "us-cdbr-iron-east-03.cleardb.net",
-	user: "b31e06c660fbbd",
-	password:"d9509ec4",
+	user: "bfa4f0b845d82b",
+	password:"971911e2",
 	port: 3306,
-	database: "heroku_a07141a102e2b1f",
+	database: "heroku_01d0e57e990d5bb",
 	debug: 'false'
 })
 
@@ -82,15 +82,33 @@ app.get("/script", (req, res, next) =>{
 
 app.post("/submission", (req, res, next) =>{
 	var exDates = [];
+	var exDatesJSON;
 	var numExDates = Object.keys(req.body).length-2;
-	console.log(numExDates);
 	var startdate = req.body.startdate[0];
 	var enddate = req.body.startdate[1];
 	var text = req.body.text;
 
-	for(let i = 0; i < numExDates;i++){
-		exDates[exDates.length] = req.body.date[i];
+	console.log(req.body);
+
+	if(numExDates == 1){
+		exDates[exDates.length] = req.body.date;
 	}
+	else if(numExDates > 1){
+		for(let i = 0; i <= numExDates;i++){
+			exDates[exDates.length] = req.body.date[i];
+			console.log("req body: " +req.body.date[i]);
+			console.log("Exdates: " + exDates[exDates.length-1]);
+		}
+	}
+	console.log("Array: " + exDates);
+	exDatesJSON = JSON.stringify(exDates);
+	console.log("JSON: " +exDatesJSON);
+
+	con.query("INSERT INTO announcements VALUES (?,?,?,?)",[startdate,enddate,exDatesJSON,text], function(err, result){
+		if(err){
+			console.log(err.stack);
+		}
+	});
 
 	res.redirect("/")
 	res.end()
