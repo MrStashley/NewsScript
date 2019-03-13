@@ -76,6 +76,9 @@
 	}
 
 	function suffix(dday){
+		if((dday === "11")||(dday == "12")||(dday == "13"))
+			return "th";
+
 		dday = dday % 10;
 		let suffix = "";
 		if(dday == 1)

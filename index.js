@@ -73,6 +73,12 @@ var date = {
 
 
 app.get("/", (req, res, next) =>{
+		con.query("select * from announcements", function(err, result,fields){
+		if(err){
+			console.log(err.stack);
+		}
+		console.log("\n\nResult: "+ JSON.stringify(result));
+	});
 	res.render('home',date)
 })
 
@@ -88,21 +94,15 @@ app.post("/submission", (req, res, next) =>{
 	var enddate = req.body.startdate[1];
 	var text = req.body.text;
 
-	console.log(req.body);
-
 	if(numExDates == 1){
 		exDates[exDates.length] = req.body.date;
 	}
 	else if(numExDates > 1){
 		for(let i = 0; i <= numExDates;i++){
 			exDates[exDates.length] = req.body.date[i];
-			console.log("req body: " +req.body.date[i]);
-			console.log("Exdates: " + exDates[exDates.length-1]);
 		}
 	}
-	console.log("Array: " + exDates);
 	exDatesJSON = JSON.stringify(exDates);
-	console.log("JSON: " +exDatesJSON);
 
 	con.query("INSERT INTO announcements VALUES (?,?,?,?)",[startdate,enddate,exDatesJSON,text], function(err, result){
 		if(err){
