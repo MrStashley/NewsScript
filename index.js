@@ -14,6 +14,50 @@ app.set('view engine', 'mustache')// sets views engine to mustache
 app.engine('mustache', require('hogan-middleware').__express) //sets up hogan middle ware
 app.use(express.static(path.join(__dirname, 'public')))
 
+
+
+	function calcDays(month,year){
+		var days;
+		var leapyear = false;
+
+		if((year%4 == 0) && (year%100 != 0) || (year%400 == 0))
+			leapyear = true;
+
+		switch(month){
+			case 2:
+				if(leapyear)
+					days = 29;
+				else
+					days = 28;
+				break;
+			case 1:
+			case 3:
+			case 5:
+			case 7:
+			case 8:
+			case 10:
+			case 12:
+				days = 31;
+				break;
+			case 4:
+			case 6:
+			case 9:
+			case 11:
+				days = 30;
+				break;
+		}
+
+		return days;
+	}
+
+
+	function rDay(year, month, day){
+			this.year = year;
+			this.month = month;
+			this.day = day;
+		}
+
+
 function announcement(styear, stmonth, stday, endyear, endmonth, endday, text, video = false){
 		this.text = text;
 		this.days = [];
@@ -71,15 +115,31 @@ var date = {
 	dayWeek: ddayWeek
 }
 
+var announcements = [];
 
 app.get("/", (req, res, next) =>{
 		con.query("select * from announcements", function(err, result,fields){
 		if(err){
 			console.log(err.stack);
 		}
-		console.log("\n\nResult: "+ JSON.stringify(result));
+		announcements = [];
+		for(let i = 0; i < result.length;i++){
+			var addate;
+			var start = result[i].startdate;
+			var end = result[i].enddate;
+			var add = JSON.parse(result[i].addates);
+			var text = result[i].atext;
+			announcements[announcements.length] = new announcement(start.getFullYear(),start.getMonth()+1,start.getDate(),end.getFullYear(),end.getMonth()+1,end.getDate(),text);
+			
+			for(let j = 0; j < add.length; j++){
+				addate = new Date(add[i]);
+				announcements[announcements.length-1].addDay(addate.getFullYear(),addate.getMonth(),addate.getDate());
+			}
+		}
+		console.log("Inner: " +JSON.stringify(announcements));
+		var a = JSON.stringify(announcements);
+		res.render('home',{announcement:announcements});
 	});
-	res.render('home',date)
 })
 
 app.get("/script", (req, res, next) =>{

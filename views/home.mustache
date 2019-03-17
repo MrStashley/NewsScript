@@ -73,10 +73,11 @@
 	}
 </script>
 <script>
-	var announcements = [];
-
-	announcements[announcements.length] = new announcement(2019,1,10,2019,2,5,"Yeet");
+	var announcements = {announcements};
 	console.log(announcements);
+	announcements[announcements.length] = new announcement(2019,1,10,2019,2,5,"Yeet");
+
+
 
 	const date = new Date();
 	const time = document.getElementById("time");
