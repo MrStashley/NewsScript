@@ -118,7 +118,11 @@ var date = {
 var announcements = [];
 
 app.get("/", (req, res, next) =>{
-		con.query("select * from announcements", function(err, result,fields){
+	res.render('home');
+})
+
+app.get("/data", (req,res,next) =>{
+	con.query("select * from announcements", function(err, result,fields){
 		if(err){
 			console.log(err.stack);
 		}
@@ -136,9 +140,7 @@ app.get("/", (req, res, next) =>{
 				announcements[announcements.length-1].addDay(addate.getFullYear(),addate.getMonth(),addate.getDate());
 			}
 		}
-		console.log("Inner: " +JSON.stringify(announcements));
-		var a = JSON.stringify(announcements);
-		res.render('home',{announcement:announcements});
+		res.json(announcements);
 	});
 })
 

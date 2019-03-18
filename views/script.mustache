@@ -1,6 +1,6 @@
 <html>
 <head>
-
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 </head>
 
 <body>
@@ -15,6 +15,8 @@
 	And to the republic for which it stands<br>
 	One nation under God, indivisible with liberty and justice for all<br>
 
+	<div id = "announcements"></div>
+
 	<br>This completes the morning announcements.<br>
 	I'm ____ and I'm _____<br>
 	And we have Eagle Pride!
@@ -26,6 +28,27 @@
 <script>
 	var date = JSON.parse('{"year": {{year}},"month": {{month}},"day": {{day}}, "dayWeek": {{dayWeek}}}');
 	const dateElem = document.getElementById("dateElem");
+	
+	var announcements = [];
+	var gotAnnouncements = false;
+
+	$.ajax({
+		url: "/data",
+		complete: function(data){
+			announcements = data.responseJSON;
+			gotAnnouncements = true;
+		}
+	});
+
+	function checkAnnouncements(){
+		if(gotAnnouncements)
+			console.log(announcements);
+		else{
+			setTimeout(checkAnnouncements,50);
+		}
+	}
+	checkAnnouncements();
+
 
 	var dayofweek = calcDayofWeek(date.dayWeek);
 	var month = calcMonth(date.month);

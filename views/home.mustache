@@ -2,6 +2,7 @@
 <head>
 	<link href="https://fonts.googleapis.com/css?family=PT+Sans" rel="stylesheet">
 	<link rel="stylesheet" type ="text/css" href ="/css/homestyle.css">
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 </head>
 
 <body>
@@ -31,7 +32,6 @@
 	<div id = "sidebar">
 
 	</div>
-<script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
 <script src = "/js/datefunctions.js"></script>
 <script>
 	var newinput = [];
@@ -73,11 +73,25 @@
 	}
 </script>
 <script>
-	var announcements = {announcements};
-	console.log(announcements);
-	announcements[announcements.length] = new announcement(2019,1,10,2019,2,5,"Yeet");
+	var announcements = [];
+	var gotAnnouncements = false;
 
+	$.ajax({
+		url: "/data",
+		complete: function(data){
+			announcements = data.responseJSON;
+			gotAnnouncements = true;
+		}
+	});
 
+	function checkAnnouncements(){
+		if(gotAnnouncements)
+			console.log(announcements);
+		else{
+			setTimeout(checkAnnouncements,50);
+		}
+	}
+	checkAnnouncements();
 
 	const date = new Date();
 	const time = document.getElementById("time");

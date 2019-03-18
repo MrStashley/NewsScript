@@ -15,17 +15,17 @@
 
 #sidebar{
 	position: fixed;
-    width: 35%;
+    width: 30%;
     overflow-y: scroll;
     top: 0;
-    left:65%;
+    left:70%;
     bottom: 0;
     border-left-style: solid;
     border-left-width: 1px;
 }
 
 #main{
-	width: 65%;
+	width: 70%;
 }
 
 #newstext{
