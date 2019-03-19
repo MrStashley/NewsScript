@@ -99,6 +99,11 @@
 			this.day = day;
 		}
 
+	var numberify = function(rDay){
+			var numstring = rDay.month + "/" + rDay.day + "/" + rDay.year;
+			return numstring;
+	}
+
 	function calcDays(month,year){
 		var days;
 		var leapyear = false;
@@ -170,18 +175,6 @@
 			var run = false;
 			for(let i = 0; i < this.days.length;i++){
 				var d = this.days[i];
-				if((d.year == date.year) && (d.month == date.month) && (d.day == date.day)){
-					run = true;
-				}
-			}
-			return run;
-		}
-
-		var isRun = function(date,announcementResponse){
-			var run = false;
-			var a = announcementResponse.days;
-			for(let i = 0; i < a.length;i++){
-				var d = a[i];
 				if((d.year == date.year) && (d.month == date.month) && (d.day == date.day)){
 					run = true;
 				}

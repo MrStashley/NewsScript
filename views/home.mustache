@@ -85,8 +85,9 @@
 	});
 
 	function checkAnnouncements(){
-		if(gotAnnouncements)
-			console.log(announcements);
+		if(gotAnnouncements){
+				newSidebar(announcements.notRunToday[0]);
+		}
 		else{
 			setTimeout(checkAnnouncements,50);
 		}
@@ -100,6 +101,25 @@
 	var day = date.getDate();
 	var hours = date.getHours();
 	var minutes = date.getMinutes();
+
+</script>
+
+<script id = "sidebar">
+	const sidebar = document.getElementById("sidebar");
+	var t,b,br;
+	function newSidebar(anlist){
+		var sdiv = document.createElement("div");
+		sdiv.classList.add("sdiv");
+		sidebar.appendChild(sdiv);
+		b = document.createElement("b");
+		sdiv.appendChild(b);
+		t = document.createTextNode(numberify(anlist.days[0]) + " - " + numberify(anlist.days[anlist.days.length-1]));
+		b.appendChild(t);
+		br = document.createElement("br");
+		sdiv.appendChild(br);
+		t = document.createTextNode(anlist.text);
+		sdiv.appendChild(t);
+}
 
 </script>
 

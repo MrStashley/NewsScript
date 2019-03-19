@@ -36,7 +36,6 @@
 	$.ajax({
 		url: "/data",
 		complete: function(data){
-			console.log(data.responseJSON);
 			announcements = data.responseJSON;
 			gotAnnouncements = true;
 		}
@@ -69,6 +68,7 @@
 	dateElem.innerHTML = dateText;
 
 </script>
+
 </body>
 
 </html>
