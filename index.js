@@ -91,6 +91,17 @@ function announcement(styear, stmonth, stday, endyear, endmonth, endday, text, v
 		this.days[this.days.length] = new rDay(year, month, day);
 	}
 
+	announcement.prototype.isRun = function(date){
+		var run = false;
+		for(let i = 0; i < this.days.length;i++){
+			var d = this.days[i];
+			if((d.year == date.year) && (d.month == date.month) && (d.day == date.day)){
+				run = true;
+			}
+		}
+		return run;
+	}
+
 const con = mysql.createPool({
 	connectionLimit: 100,
 	host: "us-cdbr-iron-east-03.cleardb.net",
@@ -117,6 +128,12 @@ var date = {
 
 var announcements = [];
 
+var announcementList = {
+	runToday: new Array,
+	notRunToday: new Array,
+	new: new Array
+}
+
 app.get("/", (req, res, next) =>{
 	res.render('home');
 })
@@ -127,6 +144,9 @@ app.get("/data", (req,res,next) =>{
 			console.log(err.stack);
 		}
 		announcements = [];
+		announcementList.runToday = [];
+		announcementList.notRunToday = [];
+		announcementList.new = [];
 		for(let i = 0; i < result.length;i++){
 			var addate;
 			var start = result[i].startdate;
@@ -134,13 +154,22 @@ app.get("/data", (req,res,next) =>{
 			var add = JSON.parse(result[i].addates);
 			var text = result[i].atext;
 			announcements[announcements.length] = new announcement(start.getFullYear(),start.getMonth()+1,start.getDate(),end.getFullYear(),end.getMonth()+1,end.getDate(),text);
-			
+
 			for(let j = 0; j < add.length; j++){
 				addate = new Date(add[i]);
 				announcements[announcements.length-1].addDay(addate.getFullYear(),addate.getMonth(),addate.getDate());
 			}
 		}
-		res.json(announcements);
+
+		for(let i = 0; i < announcements.length;i++){
+			if(announcements[i].isRun(date)){
+				announcementList.runToday[announcementList.runToday.length] = announcements[i];
+			}else {
+				announcementList.notRunToday[announcementList.notRunToday.length] = announcements[i];
+			}
+		}
+
+		res.json(announcementList);
 	});
 })
 

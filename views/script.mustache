@@ -27,22 +27,34 @@
 <script src = "/js/datefunctions.js"></script>
 <script>
 	var date = JSON.parse('{"year": {{year}},"month": {{month}},"day": {{day}}, "dayWeek": {{dayWeek}}}');
+	var rDate = new rDay(date.year, date.month, date.day);
 	const dateElem = document.getElementById("dateElem");
-	
+
 	var announcements = [];
 	var gotAnnouncements = false;
 
 	$.ajax({
 		url: "/data",
 		complete: function(data){
+			console.log(data.responseJSON);
 			announcements = data.responseJSON;
 			gotAnnouncements = true;
 		}
 	});
 
 	function checkAnnouncements(){
-		if(gotAnnouncements)
-			console.log(announcements);
+		if(gotAnnouncements){
+			const adiv = document.getElementById("announcements")
+			var t, br;
+			for(let i = 0; i < announcements.runToday.length; i++){
+				br = document.createElement("br");
+				adiv.appendChild(br);
+				t = document.createTextNode(announcements.runToday[i].text);
+				adiv.appendChild(t);
+				br = document.createElement("br");
+				adiv.appendChild(br);
+			}
+		}
 		else{
 			setTimeout(checkAnnouncements,50);
 		}

@@ -165,3 +165,26 @@
 		announcement.prototype.addDay = function(year, month, day){
 			this.days[this.days.length] = new rDay(year, month, day);
 		}
+
+		announcement.prototype.isRun = function(date){
+			var run = false;
+			for(let i = 0; i < this.days.length;i++){
+				var d = this.days[i];
+				if((d.year == date.year) && (d.month == date.month) && (d.day == date.day)){
+					run = true;
+				}
+			}
+			return run;
+		}
+
+		var isRun = function(date,announcementResponse){
+			var run = false;
+			var a = announcementResponse.days;
+			for(let i = 0; i < a.length;i++){
+				var d = a[i];
+				if((d.year == date.year) && (d.month == date.month) && (d.day == date.day)){
+					run = true;
+				}
+			}
+			return run;
+		}
