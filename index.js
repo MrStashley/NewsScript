@@ -102,6 +102,18 @@ function announcement(styear, stmonth, stday, endyear, endmonth, endday, text, v
 		return run;
 	}
 
+	var isFirst(r1,r2){
+		var is = false;
+		if(r1.year < r2.year)
+			is = true;
+		if(r1.month < r2.year)
+			is = true;
+		if(r1.day < r2.day)
+			is = true;
+
+		return is;
+	}
+
 const con = mysql.createPool({
 	connectionLimit: 100,
 	host: "us-cdbr-iron-east-03.cleardb.net",
@@ -189,7 +201,10 @@ app.post("/submission", (req, res, next) =>{
 		exDates[exDates.length] = req.body.date;
 	}
 	else if(numExDates > 1){
+		var r1,r2,temp;
 		for(let i = 0; i <= numExDates;i++){
+			r1 = exDates[exDates.length-1];
+			r1 = req.body.date[i];
 			exDates[exDates.length] = req.body.date[i];
 		}
 	}
