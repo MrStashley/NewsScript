@@ -86,7 +86,15 @@
 
 	function checkAnnouncements(){
 		if(gotAnnouncements){
-				newSidebar(announcements.notRunToday[0]);
+			newHeader("Run Today");
+			for(let i = 0; i < announcements.runToday.length; i++){
+				newSidebar(announcements.runToday[i]);
+			}
+
+			newHeader("Not Run Today");
+			for(let i = 0; i < announcements.notRunToday.length;i++){
+				newSidebar(announcements.notRunToday[i]);
+			}
 		}
 		else{
 			setTimeout(checkAnnouncements,50);
@@ -107,6 +115,7 @@
 <script id = "sidebar">
 	const sidebar = document.getElementById("sidebar");
 	var t,b,br;
+
 	function newSidebar(anlist){
 		var sdiv = document.createElement("div");
 		sdiv.classList.add("sdiv");
@@ -119,6 +128,14 @@
 		sdiv.appendChild(br);
 		t = document.createTextNode(anlist.text);
 		sdiv.appendChild(t);
+}
+
+function newHeader(anlist){
+	var sdiv = document.createElement("div");
+	sdiv.classList.add("sdivHead");
+	sidebar.appendChild(sdiv);
+	t = document.createTextNode(anlist);
+	sdiv.appendChild(t);
 }
 
 </script>

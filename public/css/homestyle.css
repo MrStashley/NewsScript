@@ -14,6 +14,12 @@
 	border-bottom-width: 1px;
 }
 
+.sdivHead{
+	border-bottom-style:solid;
+	border-bottom-width: 1px;
+	background-color: lightgrey;
+}
+
 #adddate{
 	padding:;
 }
