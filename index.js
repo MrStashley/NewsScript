@@ -122,7 +122,7 @@ const con = mysql.createPool({
 	port: 3306,
 	database: "heroku_01d0e57e990d5bb",
 	debug: 'false',
-	connectTimeout: 1000000
+	connectTimeout: 100000
 })
 
 const d = new Date();
@@ -202,11 +202,13 @@ app.post("/submission", (req, res, next) =>{
 		exDates[exDates.length] = req.body.date;
 	}
 	else if(numExDates > 1){
+		var tempDates = req.body.date;
 		var r1,r2,temp;
 		for(let i = 0; i <= numExDates;i++){
 			r1 = exDates[exDates.length-1];
 			r1 = req.body.date[i];
-			exDates[exDates.length] = req.body.date[i];
+			if((isFirst(r2,r1)) || (exDates.length == 0))
+				exDates[exDates.length] = req.body.date[i];
 		}
 	}
 	exDatesJSON = JSON.stringify(exDates);
