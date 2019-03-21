@@ -102,7 +102,7 @@ function announcement(styear, stmonth, stday, endyear, endmonth, endday, text, v
 		return run;
 	}
 
-	var isFirst(r1,r2){
+	var isFirst = function(r1,r2){
 		var is = false;
 		if(r1.year < r2.year)
 			is = true;
@@ -121,7 +121,8 @@ const con = mysql.createPool({
 	password:"971911e2",
 	port: 3306,
 	database: "heroku_01d0e57e990d5bb",
-	debug: 'false'
+	debug: 'false',
+	connectTimeout: 1000000
 })
 
 const d = new Date();
