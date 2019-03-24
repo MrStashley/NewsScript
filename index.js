@@ -197,10 +197,8 @@ app.get("/data", (req,res,next) =>{
 			var text = result[i].atext;
 			announcements[announcements.length] = new announcement(start.getFullYear(),start.getMonth()+1,start.getDate(),end.getFullYear(),end.getMonth()+1,end.getDate(),text);
 
-			console.log(add);
 			for(let j = 0; j < add.length; j++){
 				addate = new Date(add[j]);
-				console.log(addate);
 				announcements[announcements.length-1].addDay(addate.getFullYear(),addate.getMonth()+1,addate.getDate());
 			}
 		}
