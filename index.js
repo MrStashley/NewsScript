@@ -135,9 +135,9 @@ function announcement(styear, stmonth, stday, endyear, endmonth, endday, text, v
 		var is = false;
 		if(r1.year < r2.year)
 			is = true;
-		else if(r1.month < r2.month)
+		else if((r1.month < r2.month) && (r2.year == r1.year))
 			is = true;
-		else if(r1.day < r2.day)
+		else if((r1.day < r2.day) && (r1.month == r2.month) && (r2.year == r1.year))
 			is = true;
 
 		return is;
@@ -197,21 +197,31 @@ app.get("/data", (req,res,next) =>{
 			var text = result[i].atext;
 			announcements[announcements.length] = new announcement(start.getFullYear(),start.getMonth()+1,start.getDate(),end.getFullYear(),end.getMonth()+1,end.getDate(),text);
 
+			console.log(add);
 			for(let j = 0; j < add.length; j++){
-				addate = new Date(add[i]);
-				announcements[announcements.length-1].addDay(addate.getFullYear(),addate.getMonth(),addate.getDate());
+				addate = new Date(add[j]);
+				console.log(addate);
+				announcements[announcements.length-1].addDay(addate.getFullYear(),addate.getMonth()+1,addate.getDate());
 			}
 		}
 
 		for (let i = 0; i < announcements.length; i++){
 			announcements[i].sortDates();
+			var enddate,startdate,text,endday,startday,endstring,startstring;
 			if(announcements[i].checkDelete(date))
 				console.log("Deleting " + announcements[i].text);
-				con.query("DELETE from announcements WHERE atext = ? AND addates = ? AND enddate = ? AND startdate = ?"), [announcements[i].text,JSON.stringify(announcements[i].days),announcements[i].enddate, announcements[i].startdate], function(err,result){
+				text = announcements[i].text;
+				endday = announcements[i].days[announcements[i].days.length-1];
+				endstring = endday.year + "-" + endday.month + "-" + endday.day;
+				startday = announcements[i].days[0];
+				startstring = startday.year + "-" + startday.month + "-" + startday.day;
+				enddate = new Date(endstring);
+				startdate = new Date(startstring);
+				con.query("DELETE from announcements WHERE atext = ? AND enddate = ? AND startdate = ?", [text,endstring,startstring], function(err,result){
 					if(err){
 						console.log(err.stack);
 					}
-				}
+				});
 		}
 
 		for(let i = 0; i < announcements.length;i++){
@@ -235,7 +245,14 @@ app.get("/script", (req, res, next) =>{
 app.post("/submission", (req, res, next) =>{
 	var exDates = [];
 	var exDatesJSON;
-	var numExDates = Object.keys(req.body).length-2;
+	var numExDates;
+	if(Object.keys(req.body).length-2 > 0){
+		if(req.body.date.constructor === Array)
+		 	numExDates = req.body.date.length;
+		else
+			numExDates = 1;
+	}else
+		numExDates = 0;
 	var startdate = req.body.startdate[0];
 	var enddate = req.body.startdate[1];
 	var text = req.body.text;
@@ -244,12 +261,12 @@ app.post("/submission", (req, res, next) =>{
 		exDates[exDates.length] = req.body.date;
 	}
 	else if(numExDates > 1){
-		for(let i = 0; i <= numExDates;i++){
-				exDates[exDates.length] = req.body.date[i];
+		for(let i = 0; i < numExDates;i++){
+				exDates[i] = req.body.date[i];
 			}
 	}
 	exDatesJSON = JSON.stringify(exDates);
-	con.query("INSERT INTO announcements VALUES (?,?,?,?)",[startdate,enddate,exDatesJSON,text], function(err, result){
+	con.query("INSERT INTO announcements VALUES (?,?,?,?,0)",[startdate,enddate,exDatesJSON,text], function(err, result){
 		if(err){
 			console.log(err.stack);
 		}
