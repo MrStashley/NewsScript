@@ -63,10 +63,16 @@ function announcement(styear, stmonth, stday, endyear, endmonth, endday, text, v
 		this.days = [];
 		this.video = video;
 
+		let isDates;
+		if(styear)
+			isDates = true;
+		else
+			isDates = false;
+
 		let year = styear;
 		let month = stmonth;
 		let day = stday;
-		while(true){
+		while(isDates){
 			this.addDay(year, month, day);
 
 			if(day == calcDays(month, year)){
@@ -124,8 +130,9 @@ function announcement(styear, stmonth, stday, endyear, endmonth, endday, text, v
 	}
 
 	announcement.prototype.checkDelete =function(date){
-		if(isFirst(this.days[this.days.length-1],date))
+		if(isFirst(this.days[this.days.length-1],date)){
 			return true;
+		}
 		else {
 			return false;
 		}
@@ -195,8 +202,16 @@ app.get("/data", (req,res,next) =>{
 			var end = result[i].enddate;
 			var add = JSON.parse(result[i].addates);
 			var text = result[i].atext;
-			announcements[announcements.length] = new announcement(start.getFullYear(),start.getMonth()+1,start.getDate(),end.getFullYear(),end.getMonth()+1,end.getDate(),text);
-
+			if ((start == '0000-00-00') || (end == '0000-00-00')){
+				if(start != '0000-00-00')
+					add[add.length] = start;
+				else if (end != '0000-00-00')
+					add[add.length] = end;
+				announcements[announcements.length] = new announcement(0,0,0,0,0,0,text);
+			}
+			else{
+				announcements[announcements.length] = new announcement(start.getFullYear(),start.getMonth()+1,start.getDate(),end.getFullYear(),end.getMonth()+1,end.getDate(),text);
+			}
 			for(let j = 0; j < add.length; j++){
 				addate = new Date(add[j]);
 				announcements[announcements.length-1].addDay(addate.getFullYear(),addate.getMonth()+1,addate.getDate());
@@ -206,20 +221,16 @@ app.get("/data", (req,res,next) =>{
 		for (let i = 0; i < announcements.length; i++){
 			announcements[i].sortDates();
 			var enddate,startdate,text,endday,startday,endstring,startstring;
-			if(announcements[i].checkDelete(date))
+			console.log(date);
+			if(announcements[i].checkDelete(date)){
 				console.log("Deleting " + announcements[i].text);
 				text = announcements[i].text;
-				endday = announcements[i].days[announcements[i].days.length-1];
-				endstring = endday.year + "-" + endday.month + "-" + endday.day;
-				startday = announcements[i].days[0];
-				startstring = startday.year + "-" + startday.month + "-" + startday.day;
-				enddate = new Date(endstring);
-				startdate = new Date(startstring);
-				con.query("DELETE from announcements WHERE atext = ? AND enddate = ? AND startdate = ?", [text,endstring,startstring], function(err,result){
+				con.query("DELETE from announcements WHERE atext = ?", [text], function(err,result){
 					if(err){
 						console.log(err.stack);
 					}
 				});
+			}
 		}
 
 		for(let i = 0; i < announcements.length;i++){
