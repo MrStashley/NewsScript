@@ -75,6 +75,9 @@ function announcement(styear, stmonth, stday, endyear, endmonth, endday, text, v
 		while(isDates){
 			this.addDay(year, month, day);
 
+			if(((year == styear) && (month == stmonth) && (day == stday)))
+				break;
+
 			if(day == calcDays(month, year)){
 				if(month < 12)
 					month++;
@@ -87,7 +90,7 @@ function announcement(styear, stmonth, stday, endyear, endmonth, endday, text, v
 				day++;
 
 			if(((year == endyear) && (month == endmonth) && (day == endday)) || (year >= 3000)){
-				this.addDay(year, month, day);
+					this.addDay(year, month, day);
 				break;
 			}
 		}
@@ -130,7 +133,9 @@ function announcement(styear, stmonth, stday, endyear, endmonth, endday, text, v
 	}
 
 	announcement.prototype.checkDelete =function(date){
-		if(isFirst(this.days[this.days.length-1],date)){
+		if(!(this.days[this.days.length-1]))
+			return true;
+		else if(isFirst(this.days[this.days.length-1],date)){
 			return true;
 		}
 		else {

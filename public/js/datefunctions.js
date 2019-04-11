@@ -99,9 +99,13 @@
 			this.day = day;
 		}
 
-	var numberify = function(rDay){
-			var numstring = rDay.month + "/" + rDay.day + "/" + rDay.year;
+	var numberify = function(nDay){
+		if( (!nDay) || (!nDay.year) || (!nDay.month) || (!nDay.day))
+			return "00/00/0000";
+		else{
+			var numstring = nDay.month + "/" + nDay.day + "/" + nDay.year;
 			return numstring;
+		}
 	}
 
 	function calcDays(month,year){
