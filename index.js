@@ -72,10 +72,11 @@ function announcement(styear, stmonth, stday, endyear, endmonth, endday, text, v
 		let year = styear;
 		let month = stmonth;
 		let day = stday;
+
 		while(isDates){
 			this.addDay(year, month, day);
 
-			if(((year == styear) && (month == stmonth) && (day == stday)))
+			if(((year == endyear) && (month == endmonth) && (day == endday)))
 				break;
 
 			if(day == calcDays(month, year)){
@@ -90,6 +91,7 @@ function announcement(styear, stmonth, stday, endyear, endmonth, endday, text, v
 				day++;
 
 			if(((year == endyear) && (month == endmonth) && (day == endday)) || (year >= 3000)){
+					console.log("Running: " + this.days.length);
 					this.addDay(year, month, day);
 				break;
 			}
@@ -207,7 +209,9 @@ app.get("/data", (req,res,next) =>{
 			var end = result[i].enddate;
 			var add = JSON.parse(result[i].addates);
 			var text = result[i].atext;
+			console.log("Start: " + start + "End: " + end);
 			if ((start == '0000-00-00') || (end == '0000-00-00')){
+				console.log("Running...\n\n\n");
 				if(start != '0000-00-00')
 					add[add.length] = start;
 				else if (end != '0000-00-00')
@@ -226,7 +230,6 @@ app.get("/data", (req,res,next) =>{
 		for (let i = 0; i < announcements.length; i++){
 			announcements[i].sortDates();
 			var enddate,startdate,text,endday,startday,endstring,startstring;
-			console.log(date);
 			if(announcements[i].checkDelete(date)){
 				console.log("Deleting " + announcements[i].text);
 				text = announcements[i].text;
@@ -237,6 +240,7 @@ app.get("/data", (req,res,next) =>{
 				});
 			}
 		}
+
 
 		for(let i = 0; i < announcements.length;i++){
 			if(announcements[i].isRun(date)){
@@ -269,6 +273,7 @@ app.post("/submission", (req, res, next) =>{
 		numExDates = 0;
 	var startdate = req.body.startdate[0];
 	var enddate = req.body.startdate[1];
+	console.log("Dates: " + startdate + ", " + enddate);
 	var text = req.body.text;
 
 	if(numExDates == 1){
