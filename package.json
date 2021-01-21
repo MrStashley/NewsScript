@@ -16,6 +16,6 @@
     "hogan-middleware": "^0.2.2",
     "jquery": "^3.5.0",
     "mysql": "^2.16.0",
-    "socket.io": "^2.2.0"
+    "socket.io": "^2.4.0"
   }
 }
