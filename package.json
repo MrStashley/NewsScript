@@ -11,7 +11,7 @@
   "license": "ISC",
   "dependencies": {
     "body-parser": "^1.18.3",
-    "express": "^4.16.4",
+    "express": "^4.17.3",
     "hjs": "0.0.6",
     "hogan-middleware": "^0.2.2",
     "jquery": "^3.5.0",
